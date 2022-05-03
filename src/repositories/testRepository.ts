@@ -85,9 +85,43 @@ async function getTestsSearchByDiscipline(search: string) {
   });
 }
 
+async function getTestViews(id: number) {
+  await prisma.test.update({
+    where: { id },
+    data: { 
+        views: {increment: 1},
+     },
+  })
+}
+
+export async function getTeacherDiscipline(
+  disciplineId: number,
+  teacherId: number
+) {
+  return await prisma.teacherDiscipline.findFirst({
+    select: {
+      id: true,
+    },
+    where: {
+      teacherId,
+      disciplineId,
+    },
+  });
+}
+
+export async function insert(data: any) {
+  console.log(data)
+  return await prisma.test.create({
+    data
+  });
+}
+
 export default {
   getTestsByDiscipline,
   getTestsByTeachers,
   getTestsSearchByDiscipline,
-  getTestsSearchByTeachers
+  getTestsSearchByTeachers,
+  getTestViews,
+  getTeacherDiscipline,
+  insert
 };

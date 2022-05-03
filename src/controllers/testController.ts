@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import testService from "../services/testService.js";
-
 async function find(req: Request, res: Response) {
   const { groupBy } = req.query as { groupBy: string };
 
@@ -24,7 +23,22 @@ async function search(req: Request, res: Response) {
   res.send({ tests });
 }
 
+async function viewsController(req: Request, res: Response) {
+  const { id } = req.params
+
+  const tests = await testService.views( Number(id) );
+  res.send({ tests });
+}
+
+async function insert(req: Request, res: Response) {
+  const data: any = req.body
+  await testService.insert( data );
+  res.sendStatus(201);
+}
+
 export default {
   find,
-  search
+  search,
+  viewsController,
+  insert
 };
